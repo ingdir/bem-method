@@ -1,7 +1,7 @@
 ﻿==История создания БЭМ
 
 This article tells about the invention of BEM and how its key principles evolved along its history.
-The main point of the article is to highlight the utter level of flexibility that BEM posesses as a development methodology, and probably offer some ways to apply it to your project effectively.
+The main point of the article is to highlight the utter level of flexibility that BEM posesses as a development methodology, and probably offer some ways to apply it to your projects effectively.
 
 === Where it all began (Yandex.Addresses)
 
@@ -17,9 +17,9 @@ i/
     yandex.png
 %%
 
-Pages were static HTML files, with all CSS pushed into a single file, ##adresa.css##, and all Javascript placed in a single ##adresa.js##; both files were shared between all project pages. Images were placed into a separate folder. JavaScript at that times was only sparsely applied to some controls.
+Pages were static HTML files, with all the CSS pushed into a single stylesheet, ##adresa.css##, and all Javascript placed in a single ##adresa.js##; both files were shared between project pages. Images were placed into a separate folder. JavaScript at that times was only sparsely applied to some controls.
 
-Styles for different page sections were separated in that file using plain CSS comments like this:
+Style definitions for different page sections were separated using plain CSS comments like this:
 
 
 %%hl xml
@@ -53,7 +53,7 @@ Static HTML was manually copied into XSL stylesheets to be used in production, a
 
 Yandex.Addresses was a small project with only a few distinct pages, so the above-mentioned method was appropriate.
 
-At the beginning of 2006, the first version of Yandex.Music had been under heavily development. Multiple pages, all unlike each other, didn't fit well into that simple concept. Dozens of CSS classes you have to invent meaningful names for, a growing number of unintentional dependencies spread along the project--all that called for some improvement.
+At the beginning of 2006, the first version of Yandex.Music had been under heavily development. Multiple pages, all unlike each other, didn't fit well into familiar concepts. Dozens of CSS classes you had to invent meaningful names for, a growing number of unintentional dependencies spread along the project--all that called for a better solution.
 
 Typical piece of CSS code from those days:
 
@@ -92,9 +92,9 @@ Typical piece of CSS code from those days:
     /* Albums (end) */
 %%
 
-See how long cascade rules are used everywhere.
+See that long cascade rules are used throughout the code.
 
-Take another look:
+Have another look:
 
 %%hl xml
     /* Background images (begin) */
@@ -137,34 +137,34 @@ Take another look:
     /* Background images (end) */
 %%
 
-See we also use ##id## and HTML tag names.
+See that ##id## and HTML tag names are often used as a part of CSS rule.
 
 At the same time, even bigger project was started ((http://news.yandex.ru Яру)).\\
-There were dozens of various pages to support, and with the old-fashioned approach the code went out of control on som many levels that we needed a better concept.
+There were dozens of various pages to support, and with the old-fashioned approach the code run out of control on many levels.
 
-====Blocks come onto the scene
+====Blocks to the rescue
 
-A new term, "block", was defined that meant simply a part of page design or layout having its specific and unique meaning, either semantically, or visually defined.
+A new term was created: "block". Block is a part of a page design or layout having its specific and unique meaning defined either semantically, or visually.
 
-CSS classes for these new substances got prefixes (##b-##, ##c-##, ##g-##), so they never mix up with the inner classnames.
+CSS classes for blocks got prefixes (##b-##, ##c-##, ##g-##) not to mix up with the inner classnames.
 
 Prefixes explained:
  * **b-**  block\\
-   an independent block, used wherever you need it on your page
+   an independent block, placed on a page wherever you need it
  * **с-**  control\\
-   a control (an independent block) that has a JavaScript object bound to it
+   a control (an independent block) with a JavaScript object bound to it
  * **g-**  global\\
-   a global definition, used sparingly and always defined for a specific, unique reason; the number of these definitions was kept at a minimum
+   a global definition, used sparingly and always defined for a specific, unique reason; the number of these definitions was kept at a minimum.
 
-Some suffixes were employed as well, such as:
+Some suffixes were employed as well, e.g.:
  * **-nojs**   no javascript\\
    Style rule to be applied with JavaScript turned off.
-   The onload callback may contain ##init()## call that removes these suffixes from all objects, thus semantically marking them up as "JavaScript-enabled".
+   The onload callback may contain ##init()## function call that removes these suffixes from all objects, thus semantically marking them up as "JavaScript-enabled".
 
-====The Elements appear
-The inner classes of a block were renamed into "elements".
+====The elements appear
+The inner classes of a block (or the corresponding DOM nodes inside) were renamed into "elements".
 
-Elements with lots of CSS were surrounded by comments.
+Elements with lots of CSS got extra indentation and were wrapped in comments:
 
 %%hl xml
     /* Head (begin) */
@@ -192,9 +192,9 @@ Elements with lots of CSS were surrounded by comments.
 %%
 
 ====Project file structure evolves
-Projects now take advantage of a more granular file structure.
+Projects took advantage of a more granular file structure.
 
-CSS and JS files get their separate folders.
+CSS and JS files got their separate folders.
 
 %%hl xml
 index.html
@@ -226,7 +226,7 @@ MSIE-specific hacks could go into the main CSS file (##yaru.css##) if they were 
             }
 %%
 
-Non-valid workarounds found themselves placed into standalone ##yaru-ie.css##.
+Non-valid workarounds found themselves placed in a standalone ##yaru-ie.css##.
 
 %%hl xml
     /* Common blocks (begin) */
@@ -238,15 +238,15 @@ Non-valid workarounds found themselves placed into standalone ##yaru-ie.css##.
                 }
 %%
 
-===Building up a unified framework: The Beginning
+===Building up a framework: The Beginning
 
 Designing similar projects eventually leads to re-creating the same blocks over and over again.
 
-Careless copy/paste from project to project doesn't work well, for obvious reasons; you start compiling a shared folder of reusable components, which was referred to as a "common blocks library", or simply "the Common".
+Careless copy/paste from project to project doesn't work well, for obvious reasons; you start compiling a collection of reusable components, which was referred to as a "common blocks library" inside our company, or simply "the Common".
 
-First page element to be unified were header, footer and some typographic CSS definitions. They were placed on a dedicated server.
+First page fragments to be unified were: header, footer and some typographic CSS definitions. The corresponding files were hosted on a dedicated server.
 
-Styles were imported:
+Styles could be imported:
 
 %%hl xml
 @import url(http://common.cloudkill.yandex.ru/css/global.css);
@@ -266,10 +266,10 @@ Styles were imported:
         .b-head .service h1, .b-head .service h1 a, .b-head .service h1 b { … }
 %%
 
-From this point onwards, styles have to be compiled before production deployment; ##@import## directives were replaced with the actual contents of external files.
+From this point onwards, styles have to be compiled before deployment; ##@import## directives are replaced with the actual contents of external files.
 
 ===Independent blocks as a concept
-By the fall of 2007, the principles we were using to build our pages took shape to form the Independent Block concept, which was featured at the ClientSide'2007 conference:
+By the fall of 2007, the principles we were using to build our pages took their shape to produce the Independent Block concept, which was featured at the ClientSide'2007 conference:
 «((http://vitaly.harisov.name/article/independent-blocks.html Independent blocks in HTML))»
 
 In that presentation, the first attempt to define a ##block## has been made:
@@ -279,7 +279,7 @@ For more details, see: ((http://clubs.ya.ru/bem/replies.xml?item_no=42))
 
 ==== The Declaration of Block Independence
 
-At the first time in several years, we tried to define some basic rules for independent blocks:
+Fo the first time in several years, we tried to define some basic rules for independent blocks:
  1. The ##class## attribute is used to describe styles, not ##id##
  1. Each block has a prefix
  1. CSS stylesheet must contain no class definitions outside blocks
