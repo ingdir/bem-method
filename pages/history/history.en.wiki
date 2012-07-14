@@ -1,25 +1,30 @@
-﻿==История создания БЭМ
+﻿==The History of BEM
 
-This article tells about the invention of BEM and how its key principles evolved along its history.
-The main point of the article is to highlight the utter level of flexibility that BEM posesses as a development methodology, and probably offer some ways to apply it to your projects effectively.
+Once upon a time, in a distant country far-far away, there was an IT company named Yandex that was busy developing web search and affiliated services. Services were numerous and growing, and more and more developers put their tireless efforts into improving the ecosystem of Yandex. Great things they did, and amazing tools they built, making their developers' lives easier, and times now have come to share that knowledge with the community, to embrace the magic power of Open Source and benefit all good people around.
 
-=== Where it all began (Yandex.Addresses)
+This article tells about Yandex frontend developers constantly revising and improving the way they build web pages. Frontend developers are well known for their enormous curiosuty (that often brings innovation) and their remarkable lazyness that makes them devise sophisticated systems to save the precious time, to unify and automate everything.
 
-Back in 2005, an average Yandex project looked like this after a checkout:
+This is how BEM was born into life, but before that, let's travel back in time to 2005 and sneak a peek over a shoulder of a really-really-busy Yandex frontend developer, and thus see...
+
+=== ...Where It All Began
+
+Back in 2005, a typical Yandex project contained a set of static HTML pages that served as a base reference for creating advanced templates like XSL stylesheets. These pages were in a separate folder and looked like this after a checkout:
 
 %%hl xml
 about.html
 index.html
 …
-adresa.css
-adresa.js
+project.css
+project.js
 i/
     yandex.png
 %%
 
-Pages were static HTML files, with all the CSS pushed into a single stylesheet, ##adresa.css##, and all Javascript placed in a single ##adresa.js##; both files were shared between project pages. Images were placed into a separate folder. JavaScript at that times was only sparsely applied to some controls.
+There was a static HTML file for each page, with all the CSS pushed into a single stylesheet, ##project.css##, and all Javascript placed in a single ##project.js##; both files were shared between project pages. At those times, JavaScript was only sparsely applied to some controls, so all the interaction magic for the whole project could fit comfortably into a single small file.
 
-Style definitions for different page sections were separated using plain CSS comments like this:
+Images were placed into a separate folder, as they were many. With IE 5 roaming in the wild and no CSS3, images were used for all sorts of eye-candy, even for creating rounded corners (although none of the youngest web developers would probably believe in that :)).
+
+To keep some structure, style definitions for different page sections were separated using plain CSS comments like this:
 
 
 %%hl xml
@@ -47,13 +52,11 @@ Style definitions for different page sections were separated using plain CSS com
 
 Both IDs and classnames were used in the HTML markup.
 
-Static HTML was manually copied into XSL stylesheets to be used in production, and all changes were synced two-way, manually.
+Static HTML was manually copied into XSL stylesheets to be used in production, and all changes were synced two-way, manually. That was hard, and even when it wasn't hard, it was dull.
 
 ===Mid-scale projects
 
-Yandex.Addresses was a small project with only a few distinct pages, so the above-mentioned method was appropriate.
-
-At the beginning of 2006, the first version of Yandex.Music had been under heavily development. Multiple pages, all unlike each other, didn't fit well into familiar concepts. Dozens of CSS classes you had to invent meaningful names for, a growing number of unintentional dependencies spread along the project--all that called for a better solution.
+At the beginning of 2006, the first version of Yandex.Music had been under heavily development. Multiple pages, each unlike the other, didn't fit well into familiar simplistic concepts. Dozens of CSS classes you had to invent meaningful names for, a growing number of unintentional dependencies spread along the project--all that called for a better solution.
 
 Typical piece of CSS code from those days:
 
@@ -137,16 +140,17 @@ Have another look:
     /* Background images (end) */
 %%
 
-See that ##id## and HTML tag names are often used as a part of CSS rule.
+See that ##id## and tag names selectors are often part of a CSS rule.
 
-At the same time, even bigger project was started ((http://news.yandex.ru Яру)).\\
+At the same time, even bigger project was started ((http://wow.yandex.ru Яру))---a blogging platform, a place for people to interact, to share, to read and to engage.\\
 There were dozens of various pages to support, and with the old-fashioned approach the code run out of control on many levels.
 
-====Blocks to the rescue
+====Blocks To The Rescue
+We needed to specify a data domain for managing page interface objects. This was a methodology thing, we needed to put more clarity into the way we work with concepts like ##class##, ##tag##, ##visual component## etc.
 
-A new term was created: "block". Block is a part of a page design or layout having its specific and unique meaning defined either semantically, or visually.
+A new term was created: ##block##. Block is a part of a page design or layout having its specific and unique meaning defined either semantically, or visually.
 
-CSS classes for blocks got prefixes (##b-##, ##c-##, ##g-##) not to mix up with the inner classnames.
+CSS classes for blocks got prefixes (##b-##, ##c-##, ##g-##) to provide sort of a namespace emulation in CSS.
 
 Prefixes explained:
  * **b-**  block\\
@@ -161,10 +165,13 @@ Some suffixes were employed as well, e.g.:
    Style rule to be applied with JavaScript turned off.
    The onload callback may contain ##init()## function call that removes these suffixes from all objects, thus semantically marking them up as "JavaScript-enabled".
 
-====The elements appear
-The inner classes of a block (or the corresponding DOM nodes inside) were renamed into "elements".
+====The Elements Appear
 
-Elements with lots of CSS got extra indentation and were wrapped in comments:
+The inner classes of a block (or the corresponding DOM nodes inside) got a specific name and were now referred to as "elements".
+
+The core distinction between a block and an element is the element's inability to exist out of its parent block's context. As long as you cannot separate something from a block, it's an element; when you can, then it's probably another block that needs another name.
+
+In the styesheets, elements with lots of CSS got extra indentation and were wrapped in comments:
 
 %%hl xml
     /* Head (begin) */
@@ -191,10 +198,8 @@ Elements with lots of CSS got extra indentation and were wrapped in comments:
     /* Head (end) */
 %%
 
-====Project file structure evolves
-Projects took advantage of a more granular file structure.
-
-CSS and JS files got their separate folders.
+====Project File Structure Evolves
+Larger projects took advantage of a more granular file structure. Our tremendous love for IE produced specific CSS files with workarounds and hacks that were loaded with conditional comments. JavaScript was employed even more, we got optional components and libraries. So, CSS and JS files got their separate folders.
 
 %%hl xml
 index.html
@@ -226,7 +231,7 @@ MSIE-specific hacks could go into the main CSS file (##yaru.css##) if they were 
             }
 %%
 
-Non-valid workarounds found themselves placed in a standalone ##yaru-ie.css##.
+Non-valid workarounds were put in a standalone ##yaru-ie.css##.
 
 %%hl xml
     /* Common blocks (begin) */
@@ -238,7 +243,7 @@ Non-valid workarounds found themselves placed in a standalone ##yaru-ie.css##.
                 }
 %%
 
-===Building up a framework: The Beginning
+===Building Up A Framework: The Beginning
 
 Designing similar projects eventually leads to re-creating the same blocks over and over again.
 
@@ -268,7 +273,7 @@ Styles could be imported:
 
 From this point onwards, styles have to be compiled before deployment; ##@import## directives are replaced with the actual contents of external files.
 
-===Independent blocks as a concept
+===Independent Blocks as a Concept
 By the fall of 2007, the principles we were using to build our pages took their shape to produce the Independent Block concept, which was featured at the ClientSide'2007 conference:
 «((http://vitaly.harisov.name/article/independent-blocks.html Independent blocks in HTML))»
 
@@ -277,12 +282,12 @@ In that presentation, the first attempt to define a ##block## has been made:
 
 For more details, see: ((http://clubs.ya.ru/bem/replies.xml?item_no=42))
 
-==== The Declaration of Block Independence
+==== Blocks: The Declaration of Independence
+For the first time in several years, we tried to define some basic rules for independent blocks:
 
-Fo the first time in several years, we tried to define some basic rules for independent blocks:
- 1. The ##class## attribute is used to describe styles, not ##id##
- 1. Each block has a prefix
- 1. CSS stylesheet must contain no class definitions outside blocks
+ 1. Only classnames (not IDs) are used to describe styles;
+ 1. Each block's classname has a prefix;
+ 1. Every CSS rule must belong to a block.
 
 As soon as unique IDs are dropped, the same block can be used on the same page more than once. This also allows two or more classes to co-exist on the same DOM node, which turned out to be quite useful later.
 
@@ -294,38 +299,36 @@ Compound blocks were allowed to have nested blocks in them.
 This classification was naive; even the simplest blocks sometimes were wrapped around other blocks and had to be "upgraded" and refactored to fit the new role.
 
 =====Completely Independent Blocks
-Также были сформулированы правила полной независимости блоков:
+CSS definitions aren't bulletproof when we mix a lot of styled content originating from different sources on a single web page. In complex layouts, blocks may alter each other's appearance because of element names conflicts. Tagname-based CSS rules may match more tags than we intended them to. As soon as we had to fight these and similar bugs in production, a strict version of an independent block (named Absolutely Independept Block, abbreviated AIB) was defined with the following extra rules:
 
- 1. никогда не опираться на элементы, только на классы:\\
+ 1. never match CSS to tagnames, use classnames for everything:\\
     ##.b-user b -> .b-user .first-letter##
- 2. всем классам внутри блока давать имена начинающиеся с имени этого блока:\\
+ 2. classnames for block elements must be prefixed with the parent block name:\\
     ##.b-user .first-letter -> .b-user-first_letter##
 
-Позже мы назвали это АНБ -- ((clubs.ya.ru/bem/replies.xml?item_no=43 абсолютно-независимые блоки)).
+Such classnames tend to be much longer, and the resulting HTML code is considerably bigger in size.\\
+This was the main reason why AIB was considered a "costly solution" to be used more as a remedy, not as an everyday practice.
 
-Но класс у каждого DOM-узла существенно увеличивает HTML-код.\\
-На тот момент мы считали, что это дорого и применяли такой подход в
-исключительных случаях.
-
-=====Префиксы
-Тогда же, сформулировали правила для префиксов.
+=====Prefixes
+As everybody is aware nowadays, giving names to variables is one of the most difficult problems in development, ever.
+We approached it cautiously, and invented four prefixes allowed for block names, each with its own semantics.
 
  * **b-**\\
-   обычные блоки
+   common blocks
  * **h-**\\
-   обёртки
+   holsters, used for gluing several elements together
  * **l-**\\
-    раскладки
+   layout grids
  * **g-**\\
-   глобальные стили
+   global styles
 
-=====Модификация
+=====Modifications
 
-Ввели понятие модификации:
+There are two legitimate sources of modification for a block:
 
- 1. Блок может изменить свой внешний вид в зависимости от того, где он находится.
-    Это модификация от контекста.
- 1. Можно добавить блоку второй класс, это модификация постфиксом, она не зависит от контекста.\\
+ 1. Block may alter its presentation depending on its placement in the layout.
+    Such a modification is called context-dependent.
+ 1. An additional (postfixed) classname may change appearance. This is a context-independent (postfix-based) modification.\\
 ##class="b-block b-block-postfix"##
 
 ===Общепортальный фреймворк
