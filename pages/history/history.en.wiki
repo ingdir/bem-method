@@ -326,19 +326,20 @@ We approached it cautiously, and invented four prefixes allowed for block names,
 
 There are two legitimate sources of modification for a block:
 
- 1. Block may alter its presentation depending on its placement in the layout.
-    Such a modification is called context-dependent.
- 1. An additional (postfixed) classname may change appearance. This is a context-independent (postfix-based) modification.\\
+ 1. Block may alter its presentation according to its placement in the layout.
+    Such modification is called ##context-dependent##.
+ 1. An additional (postfixed) classname may change block's appearance. This is a context-independent (postfix-based) modification.\\
 ##class="b-block b-block-postfix"##
 
-===Общепортальный фреймворк
-Весной 2008 года была поставлена задача сделать брендбук, описывающий
-наш портальный стиль.
+===Unified Portal-Wide Framework
+At the beginning of 2008, Yandex was reviewing its internal design policies and decided to prepare a brand book (for internal use) to enforce best practices in interface design.
 
-Я начал с того, что умел лучше всего — делать HTML/CSS код.\\
-Если делать просто описание — оно устареет, не успев дописаться до конца.
+This task was assigned to my team, and after some pondering of options, I decided to proceed with the one I was most proficient with: HTML and CSS code.\\
+Interfaces evolve fast, and any attempt to describe interfaces with words and pictures will become obsolete even before completion. We needed a brand book that would represent our interfaces as they were: changing rapidly and still unified between different Yandex services and products.
 
-Проект получил название ##Лего##.
+Therefore, we decided that our interface brand book should be built with the same blocks we used to build our web sites. Blocks could be shared between projects and represent the latest in Yandex interface design.
+
+We decided to build a portal-wide framework of blocks so all could both benefit from it and contribute back. The project was internally named ##Lego##.
 
 ====Структура репозитория Лего
 Первичное разделение на верхнем уровне репозитория идёт по технологиям.
