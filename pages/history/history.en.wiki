@@ -429,8 +429,8 @@ Lego provides an SVN branch for each of its major releases; sticking to a branch
 
 This simple technique proved quite flexible and is employed up to this day by many Yandex services.
 
-=====Файлы страниц
-Файлы, подключавшиеся на страницах, состояли из @import'ов реализации блоков.
+=====Per-Page Files
+Files linked from web pages were mostly importing corresponding block implementations from the Lego folder structure.
 
 %%hl xml
 @import url(../../block/l-head/l-head.css);
@@ -439,12 +439,12 @@ This simple technique proved quite flexible and is employed up to this day by ma
 @import url(block/b-head-logo-auto.css);
 %%
 
-Эти import’ы писались вручную.
+The consistency of import directives was manually mantained.
 
-Именование файлов ещё не устоялось, мы пробуем разные варианты.
+At that point, we didn't yet come to a unified file naming convention and tried several approaches.
 
-=== Общепортальный фреймворк: Лего 1.2 (2008)
-Чуть позже в рамках версии 1.2 был сделан рефакторинг и структура Лего изменилась.
+=== Portal-Wide Framework Lego 1.2 (2008)
+Upon releasing Lego version 1.2, the code had been refactored and folder structure had changed.
 
 %%hl xml
 common/
@@ -460,8 +460,8 @@ service/
         xml/
 %%
 
-Убрано разделение на util и block, весь общий CSS лежит в common/css.\\
-От идеи выноса кода в Open Source на тот момент отказались. Вернулись к ней только через два года.
+Blocks previously separated and placed in ##util## and ##block## folders are now combined. Common styles shared by most blocks are stored in common/css.\\
+We had been pondering the possibility of open-sourcing the code but postponed it until two years later.
 
 %%hl xml
 common/
@@ -474,36 +474,29 @@ common/
                 b-dropdown.ie.css
 %%
 
-Файлы для MSIE переименованы, было -ie.css, стало .ie.css.
-Расширения у файлов теперь могут быть из нескольких слов.
+MSIE-specific styles had been renamed from *-ie.css to *.ie.css.
 
-Всё что было в опциональном CSS (файлах ##b-dropdown_arr.css##)
-вынесено в директории (##arr/b-dropdown.arr.css##).\\
-В основном файле блока стало меньше кода.
+All contents of optional CSS files (such as ##b-dropdown_arr.css##) had been moved into separate folders (##arr/b-dropdown.arr.css##).\\
 
-Для модификации постфиксом вместо минуса начали использовать подчёркивание.\\
-Это позволило визуально отделить имя блока от модификатора, что
-потом пригодилось при реализации инструментов, помогающих работать с кодом.
+For classname-based modification of a block, the underscore was assigned as a separator, replacing a single dash that was used previously.\\
+This made a block name visually separated from a modificator name, and proved quite useful while developing automatic code tools, as it allowed for unambiguous search and pattern matching.
 
-===БЭМ
-В марте 2009 выходит версия Лего 2.0.\\
-Этим событием заканчивается «Вёрстка независимыми блоками» и начинается «БЭМ».
+===BEM, est. 2009
+In March of 2009, Lego 2.0 had been released.\\
+That event marks the end of the "independent blocks" epoch and begins formation of the BEM methodology.
 
-====Лего 2.0, 2009
-Что же принципиально изменилось с выходом версии 2.0?
+====Lego 2.0 in 2009
+What was the key update the 2.0 version had delivered?
 
-Самое главное изменение -- мы вывели вперёд блоки, а не технологии.
-Блоки стали первичны, а технологии их реализации -- вторичны.
+What really changed our understanding of the methodology was the primacy of ##block## regardless of the underlying technologies. We think of blocks first and implementation details are secondary.
 
-Реализация блока делалась в отдельной директории, а технологии --
-это файлы внутри неё. В том числе появилась документация к блоку — это файл
-##.wiki## внутри блока.
+Each block has itself implemented in a separate folder; each technology (CSS, JS, XSL etc.) being represented by a separate file. Documentation just gets its own file type such as ##.wiki##.
 
-Какими терминами мы тогда оперировали?
+What additional terms did we operate on at that time?
 
-=====Терминология
-##Независимый блок##, который может быть использован в любом месте страницы.\\
-В XML он представлен тегом в неймспейсе lego.
+=====Terminology Excerpts
+##Independent Block## may be used on any web page and placed anywhere in the layout.\\
+In XML that we use to apply XSL stylesheets to, the block is represented by an XML tag in ##lego## namespace.
 
 XML:
 
@@ -512,7 +505,7 @@ XML:
 <lego:b-head-logo>
 %%
 
-В HTML класс у блока, такой же, как имя этого тега.
+In HTML, a block container gets a classname exactly corresponding to its name.
 
 HTML:
 
