@@ -20,7 +20,7 @@ i/
     yandex.png
 %%
 
-There was a static HTML file for each page, with all the CSS pushed into a single stylesheet, ##project.css##, and all Javascript placed in a single ##project.js##; both files were shared between project pages. At those times, JavaScript was only sparsely applied to some controls, so all the interaction magic for the whole project could fit comfortably into a single small file. Images were placed into a separate folder, as they were many. With IE 5 roaming in the wild and no CSS3, images were used for all sorts of eye-candy, even for creating rounded corners (although none of the youngest web developers would probably believe me :)).
+There was a static HTML file for each page, with all the CSS pushed into a single stylesheet, ##project.css##, and all Javascript placed in a single ##project.js##; both files were shared between project pages. At those times, JavaScript was only sparsely applied to some controls, so all the interaction magic for the whole project could fit comfortably into a single small file. Images were placed into a separate folder, as they were numerous. With IE 5 roaming in the wild and no CSS3, images were used for all sorts of eye-candy, even for creating rounded corners (although none of the youngest web developers would probably believe me :)).
 
 To keep some structure, style definitions for different page sections were separated using plain CSS comments like this:
 
@@ -50,11 +50,11 @@ To keep some structure, style definitions for different page sections were separ
 
 Both IDs and classnames were used in the HTML markup.
 
-Static HTML was manually copied into XSL stylesheets to be used in production, and all changes were synced two-way, manually. That was hard, and even when it wasn't hard, it was dull.
+Static HTML was manually copied into production XSL stylesheets, and all changes were synced two-way, manually. That was hard, and even when it wasn't hard, it was dull.
 
 ===Mid-scale projects
 
-At the beginning of 2006, the first version of Yandex.Music had been under heavy development. Multiple pages, each unlike the other, didn't fit well into familiar simplistic concepts. Dozens of CSS classes you had to invent meaningful names for, a growing number of unintentional dependencies spread along the project--all that called for a better solution.
+At the beginning of 2006, the first version of Yandex.Music had been under heavy development. Multiple pages, each unlike the other, didn't fit well into familiar simplistic concepts. Dozens of CSS classes you had to invent meaningful names for, a growing number of unintentional dependencies spread along the project -- all that called for a better solution.
 
 Typical piece of CSS code from those days:
 
@@ -140,7 +140,7 @@ Have another look:
 
 See that ##id## and tag names selectors are used in many rules.
 
-At the same time, even bigger project was started ((http://wow.yandex.ru Яру))---a blogging platform, a place for people to interact, to share, to read and to engage.\\
+At the same time, even bigger project was started ((http://wow.yandex.ru Яру)) -- a blogging platform, a place for people to interact, to share, to read and to engage.\\
 There were dozens of various pages to support, and with the old-fashioned approach the code run out of control on many levels.
 
 ====Blocks To The Rescue
@@ -164,9 +164,11 @@ Some suffixes were employed as well, e.g.:
 
 ====What's Inside?
 
-The inner classes of a block (or the corresponding DOM nodes inside) were now referred to as "elements".
+In a block, some nodes had a distinct classname assigned to them. This not only facilitated the creation of tagname-independent CSS, but also added semantically meaningful roles to each node. They were named "block elements", or simply "elements".
 
 The core distinction between a block and an element is the element's inability to exist out of its parent block's context. As long as you cannot separate something from a block, it's an element; when you can, then it's probably another block that needs another name.
+
+At first, elements could have existed only inside their block's container; later, a technique was provided to place some elements outside and still keep a block consistent.
 
 In the stylesheets, elements with lots of CSS got extra indentation and were wrapped in comments:
 
@@ -244,7 +246,7 @@ Non-valid workarounds were put in a standalone ##yaru-ie.css## (loaded with IE-o
 
 Designing similar projects eventually leads to re-creating the same blocks over and over again. Provided the fact that Yandex is in fact a portal having more than 100 services sharing the same corporate style, careless copy/paste from project to project doesn't work well for obvious reasons. So at first we had compiled a collection of reusable components, which inside Yandex was referred to as "common blocks library", or simply "the Common".
 
-First page fragments to be unified were: header, footer and some typographic CSS definitions. The corresponding files were hosted on an internal dedicated server. Its hostname was **common.cloudkill.yandex.ru**, and while it was unreachable from outside Yandex network, the host got mentioned in HTML comments (accidentally). That somehow caught the eye of SEO people who, inspired by such a menacing name, spawned some conspiracy theories about Yandex having a special CloudKill server set up for (obviously) dark and malicious purposes... We laughed like hell :-)
+First page fragments to be unified were: header, footer and some typographic CSS definitions. The corresponding files were hosted on an internal dedicated server (**common.cloudkill.yandex.ru** in the listings below).
 
 Styles could be imported from that server:
 
@@ -266,10 +268,10 @@ Styles could be imported from that server:
         .b-head .service h1, .b-head .service h1 a, .b-head .service h1 b { … }
 %%
 
-Obviousy, too many imports! So, we decided to pre-compile styles (and later, JS files) before deployment; the compilation replaces ##@import## directives with the actual contents of external files (this is called ##inlining##) and performs more optimizations. We had a tool for that, tuned to work with our CSS and JS; we didn't make it available because of many Yandex-specific tweaks inside. It has been superseded with more advanced instruments that are part of our opensourced codebase.
+Obviousy, too many imports! So, we decided to pre-compile styles (and later, JS files) before deployment; the compilation replaces ##@import## directives with the actual contents of external files (this is called ##inlining##) and performs more optimizations. Our internal inlining tool evolved from a simple wrapper script into an open source project ((https://github.com/veged/borschik borschik)); try it out!
 
 ===Independent Blocks as a Concept
-By the fall of 2007, the principles we were using to build our pages took their shape to produce the Independent Block concept, which was featured at the ClientSide'2007 conference.
+By the fall of 2007, the principles we were using to build our pages took their shape to produce the Independent Block concept, which was featured at the ClientSide'2007 conference in Moscow, Russia.
 
 In that presentation, the first attempt to define a ##block## has been made.
 
@@ -278,7 +280,7 @@ In or attempt to produce a formal (in fact, semi-formal) declaration of a ##bloc
 
  1. Only classnames (not IDs) are used to describe styles;
  1. Each block's classname has a prefix;
- 1. Every CSS rule must belong to a block.
+ 1. Any CSS rules except  must belong to a block.
 
 As soon as unique IDs are dropped, the same block can be used on the same page more than once. This also allows two or more classes to co-exist on the same DOM node, which turned out to be quite useful later.
 
@@ -336,8 +338,8 @@ Therefore, we decided that our interface brand book should be built with the sam
 
 We decided to build a portal-wide framework of blocks so all could both benefit from it and contribute back. The project was internally named ##Lego##.
 
-====The Lego Repository Structure
-The topmost level corresponds to various available ##implementations##:
+====Lego Repository Structure, First Approach
+The topmost level corresponded to various available ##implementations##:
 
 %%hl xml
 css/
@@ -347,9 +349,9 @@ xml/
 xsl/
 %%
 
-Each implementation contains its own sub-structure of folders.
+Each implementation contained its own sub-structure of folders.
 
-CSS goes into 3 different folders:
+CSS went into 3 different folders:
 
 %%hl xml
 css/
@@ -370,7 +372,7 @@ css/
  1. util -- general-purpose blocks ready to be opensourced
  1. service -- CSS styles for specific Yandex services, used for branding, header/footer etc.
 
-HTML folder structure is identical to CSS:
+HTML folder structure was identical to CSS:
 
 %%hl xml
 html/
@@ -383,7 +385,7 @@ html/
         b-hmenu.html
 %%
 
-JavaScript isn't yet well-structured and used inconsistently between services:
+JavaScript was yet loosely-structured and used inconsistently between services:
 
 %%hl xml
 js/
@@ -395,7 +397,7 @@ js/
     event.del.js
 %%
 
-Each service has a corresponding XML file for generating a page header (by applying an XSL stylesheet):
+Each service had a corresponding XML file semantically describing its page header (and providing necessary project-specific data), which in conjunction with an XSL stylesheet generated the header HTML code.
 
 %%hl xml
 xml/
@@ -408,7 +410,7 @@ xml/
             head.xml
 %%
 
-XSL templates for various blocks (one file per block) are placed in one folder:
+XSL templates for various blocks (one file per block) were placed in one folder:
 
 %%hl xml
 xsl/
@@ -421,7 +423,9 @@ xsl/
         l-head.xsl
 %%
 
-Lego is linked to a project using a version control feature known as ##svn:externals##.
+What about integration?
+
+Lego is linked to projects with the help of a version control feature known as ##svn:externals##.
 
 When a package is built for production deployment, the external library (Lego) code is embedded into the package; this is similar to static library linking in compiled languages.
 
@@ -686,13 +690,10 @@ While studying various factors that could have affected rendering speed, CSS sel
 These's a summary of our study available (in Russian):
 ((http://clubs.ya.ru/bem/replies.xml?item_no=338)).
 
-And it turned out that there's a way to make that CSS many times faster: we should switch to simple selectors and eliminate CSS cascade wherever possible. Selectors based on a single classname were quick and browser could handle many of them at once; and we already had a solution that could use such selectors: the so-called 
+And it turned out that there's a way to make that CSS many times faster: we should switch to simple selectors and eliminate CSS cascade wherever possible. Selectors based on a single classname are quick and browser handles them with ease. We already had a solution that could use such selectors: the so-called 
 ((http://clubs.ya.ru/bem/replies.xml?item_no=338 completely independent blocks)).
 
-Мы переделали все блоки в Лего на АНБ нотацию и с тех пор пишем блоки так, чтобы
-у каждого DOM-узла был свой class (на который можно навесить стили) и не
-используемся Tag Rules в CSS.\\
-В классы элементов вносится имя блока, селекторы получаются простыми и быстрыми.
+All Lego blocks were refactored to follow the completely independent blocks restrictions. As soon as block name becomes a prefix of block element's classnames, most selectors require a single class query and work way more faster.
 
 %%hl xml
 <div class="b-head-logo">
@@ -702,14 +703,14 @@ And it turned out that there's a way to make that CSS many times faster: we shou
 </div>
 %%
 
-====Стабилизация нотации
-Постепенно мы пришли к тому, что нотация в коде и структура на файловой
-системе устоялась и с тех пор уже не меняется.
+====Establishing Naming Conventions
+After several attempts of modifying the naming conventions, we agreed on some naming principles that hadn't changed since then.
 
-В именах файлов разделитель . был заменён на __. Было ##b-block.elem.css##,
-стало ##b-block__elem.css##. Теперь они совпадают с CSS-селекторами.
+In file names, the dot separator was replaced by double underscore __. Before: ##b-block.elem.css##,
+after: ##b-block__elem.css##. File names were made consistent with CSS selectors.
 
-Были реализованы модификаторы у элементов по аналогии с модификаторами блоков.
+Block's elements were allowed to have their own modifiers, too.
+
 ##.b-block__elem_theme_green## по аналогии с ##.b-block_theme_green##.
 
 В имя файла модификатора и в его класс внесён тип модификатора.
