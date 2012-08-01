@@ -443,7 +443,7 @@ Files linked from web pages were mostly importing corresponding block implementa
 @import url(block/b-head-logo-auto.css);
 %%
 
-The consistency of import directives was manually mantained.
+The consistency of import directives was manually maintained.
 
 At that point, we didn't yet come to a unified file naming convention and tried several approaches.
 
@@ -799,9 +799,7 @@ I assume you've got a web project and want to give BEM a try by using it here an
 
 That's great! It's how we started using BEM, too :-)
 
-Выбирайте подходящую вам схему...
-
-Choose an approach you find the easiest to understand and support, for example let your block elements have simple (non-prefixed) classes, and use modifiers with a key/value pair:
+Choose an approach you find the easiest to understand and maintain, for example let your block elements have simple (non-prefixed) classes, and use modifiers with a key/value pair:
 
 %%hl xml
 .b-block
@@ -879,7 +877,7 @@ blocks/
         b-myblock.css
 %%
 
-This will make block's root folder easier to mantain.
+This will make block's root folder easier to maintain.
 
 ====Optional Elements In Folders
 Block elements may also become optional and get their separate folders. This is an advanced albeit quite flexible approach.
@@ -898,7 +896,7 @@ This is how we write bem-bl library and most of the Lego blocks these days.
 
 ====A Folder For Everyone!
 
-You can have a separate folder for each element and each modifier, be it optional or not. This is very logical and clear, but you may find this consistent structure a bit more difficult to mantain:
+You can have a separate folder for each element and each modifier, be it optional or not. This is very logical and clear, but you may find this consistent structure a bit more difficult to maintain:
 
 %%hl xml
 blocks/
@@ -915,7 +913,7 @@ You'l be able to understand a block structure just from its folder structure, wi
 We are not yet fuly determined to switch to this approach in Lego, but this is the most likely option.
 
 ===Summary
-BEM is a development methodolody that allows team members to thing and communicate ideas using the unified language consisting of simple yet powerful terms: blocks, elements, modifiers.
+BEM is a development methodolody that allows team members to collaborate and communicate ideas using the unified language consisting of simple yet powerful terms: blocks, elements, modifiers.
 
 There is no such thing as "true BEM", and we don't try to create one. The implementation we offer is consistent and we like it a lot, but you may create your own and still call it BEM, as long as you stay true to the core principles.
 
