@@ -489,6 +489,8 @@ This made a block name visually separated from a modificator name, and proved qu
 In March of 2009, Lego 2.0 had been released.\\
 That event marks the end of the "independent blocks" epoch and begins formation of the BEM methodology.
 
+BEM stands for Block, Element, Modifier; these are the three key entities we use to develop web components.
+
 ====Lego 2.0 in 2009
 What was the key update the 2.0 version had delivered?
 
@@ -713,35 +715,36 @@ Block's elements were allowed to have their own modifiers, too.
 
 ##.b-block__elem_theme_green## по аналогии с ##.b-block_theme_green##.
 
-В имя файла модификатора и в его класс внесён тип модификатора.
-Было ##.b-menu__item_current##, стало ##.b-menu__item_state_current##.\\
-Причина этого изменения — работа с модификаторами из JS.
+Modifiers were changed to be a key/value pair:
+Before: ##.b-menu__item_current##
+After: ##.b-menu__item_state_current##.\\
+This change turned out useful when working with modifiers from JavaScript.
 
-===Open Source (2010)
+===Going Open Source (2010)
 
-В 2010 году мы создали организацию ((https://github.com/bem bem на github’е)),
-чтобы вести разработку в open source.
+In 2010, we had published some code on ((https://github.com/bem our GitHub account)) to continue growing as an open source project.
 
-====Библиотека bem-bl
-Мы начали выносить блоки из Лего в ((https://github.com/bem/bem-bl bem-bl)),
-проводя одновременно с этим рефакторинг.\\
-Вместе с выносом блоков публиковали информацию про них в клубе:
-((http://clubs.ya.ru/bem/posts.xml?tag=8486525)).
+====Creating bem-bl Library
+Blocks from Lego are being gradually ported to ((https://github.com/bem/bem-bl bem-bl)), a library of blocks we consider useful for any web site, not just a Yandex project. As blocks are open-sourced, We try to improve code and add new features.
 
-Работы по выносу блоков в Open Source пока не закончены.
+This is very much a work in progress, and we invite everybody to make pull requests :-)
 
-====Инструменты
-Начали реализацию инструментов ((https://github.com/bem/bem-tools bem-tools)),
-которые помогают работать с файлами по БЭМ-методу.\\
-Инструменты реализуются на JavaScript под Node.js.
+We also develop ((https://github.com/bem/bem-tools bem-tools)), a set of helper scripts and automation utilities that make working with BEM files easier. This is mostly done with Node.js, to keep the barriers low for frontend people familiar with JavaScript who'd like to contribute.
 
-Директории с реализацией блоков стали называть «уровнем переопределения».
 
-Например, на проекте может быть:
+====Redefinition Levels In BEM
 
- 1. публичная библиотека блоков с github
- 1. внутренняя библиотека lego
- 1. и блоки самого проекта
+One size never fits all... but one BEM does! Because blocks and elements are represented on a file system as files and folders, and because BEM file structure is unified and based mostly on semantical criteria, we can easily redefine parts of BEM blocks, or add more functionality. Similar to a way we extend objects in JavaScript, we can extend blocks using so-called "redefinition levels".
+
+Typical redefinitions levels may look like this:
+
+ 1. public bem-bl library pulled from github, extended by...
+ 1. internal block library (such as Lego), extended by..
+ 1. project-specific block library
+ 
+You're free to go and add more levels. You might need some page-specific block improvements... oh, I believe you got the idea.
+
+Example:
 
 %%hl xml
 bem-bl/
@@ -753,31 +756,25 @@ auto/
         b-logo/
 %%
 
-На уровне переопределения можно задать другую схему
-именования папок/файлов, отличную от нашей.\\
-Для этого нужно сконфигурировать уровень:
+It is also possible to have a custom file structure on a redefinition level; as long as you follow the BEM concept, all you need is to tell our build tools about your new cool structure. We won't go into much detail here, but there's a configuration file for that:
 
 %%hl xml
 .bem/
     level.js
 %%
 
-Например, вы можете задать другие разделители между именем блока
-и элемента, или не раскладывать всё по директориям, а сделать
-плоскую структуру из файлов.
+You can specify different file naming patterns, or flatten your folder structure.
 
-==== Шаблонизатор BEMHTML
-После экспериментов с разными шаблонизаторами, был разработан
-шаблонизатор BEMHTML.
+==== BEMHTML Templating Engine
+We tried different templating solutions, and ended up developing our own, called BEMHTML.
 
-Этот шаблонизатор
+This templating engine:
 
- 1. позволяет писать шаблоны в БЭМ-терминах
- 1. доопределять их на уровнях переопределения
- 1. исполнять эти шаблоны, как на сервере, так и в браузере, поскольку
- шаблоны компилируются в простой и быстрый JavaScript
+ 1. operates on core BEM (Block, Element, Modifier) terms
+ 1. allows for redefinition levels: build common blocks and tailor them to your needs
+ 1. precompiles these templates into JavaScript code that runs in a browser or on the server side
 
-О BEMHTML есть много информации в клубе на Яру:
+More details on BEMHTML is available in Russian here:
 
  * ((clubs.ya.ru/bem/replies.xml?item_no=898))
  * ((clubs.ya.ru/bem/replies.xml?item_no=899))
@@ -785,18 +782,15 @@ auto/
  * ((clubs.ya.ru/bem/replies.xml?item_no=1172))
  * ((clubs.ya.ru/bem/replies.xml?item_no=1391))
 
-===Варианты использования БЭМ
+===BEM: Try This At Home!
 
-Как вы можете видеть, БЭМ не появился сразу. У нас был долгий период
-проб и подбора наиболее подходящего нам варианта.
+As you can see, BEM has a long history of trial and error. It took Yandex a while to figure out what's important and what not.
 
-Но хочу обратить внимание, что всё это время это был БЭМ.
+The foundation of the BEM methodology are Block, Element and Modifier; these entities have been consistenly used in all our projects.
 
-То, что мы используем сейчас — не единственно верное решение. Наоборот,
-вы можете использовать БЭМ на своих проектах в том объёме, в
-котором он принесёт наибольшую пользу.
+BEM as we know and use it today is not the final truth, nor the revelation; but it something constantly being driven by practice, and tested on real-life projects. You can use this methodology to the extent that you feel is useful.
 
-БЭМ методология очень гибкая и позволяет вам настраивать её под свои процессы, под свои текущие технологии.
+BEM is quite flexible, as it is mostly a methodology; there is no such thing as BEM API, or BEM SDK. While we encourage you to try and use the open source tools we provide, which are indeed a BEM framework, you might find BEM principles good enough to be embedded into your products or technologies.
 
 Давайте посмотрим на примерах.
 
