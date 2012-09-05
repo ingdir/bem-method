@@ -202,9 +202,13 @@ In stylesheets, elements with lots of CSS got extra indentation and were wrapped
 
 ====Project File Structure Evolves
 
-At Yandex, a frontend developers usually supports more than one project. Switching between different repositories and various branches is easier when all projects use the same (or very similar) file structure. Granularity is another requirement as it provides more flexibility for version control systems and helps avoid conflicts during concurrent development.
+At Yandex, a frontend developers usually supports more than one project. Switching between different repositories and various branches is easier when all projects use the same (or very similar) file structure. Granularity is another requirement as it provides more flexibility for version control systems and helps avoid conflicts during concurrent development. This led us to a more unified structure.
 
-Larger projects took advantage of a more granular file structure. Our tremendous love for IE produced specific CSS files with workarounds and hacks that were loaded with conditional comments. JavaScript was employed even more, we got optional components and libraries. So, CSS and JS files got their separate folders.
+CSS, JavaScript, and image files reside in separate folders. In CSS, there are now dedicated files for IE-specific workarounds and hacks to keep the main code clean and standard-compliant. In production, IE is served a different CSS with all the hacks using conditional comments. 
+
+JavaScript was employed more and more daily, thus the addition of optional components and libraries.
+
+Typical file structure:
 
 %%hl xml
 index.html
@@ -217,7 +221,7 @@ i/
     yandex.png
 %%
 
-MSIE-specific hacks could go into the main CSS file (##yaru.css##) if they were in compliance with the CSS standards:
+MSIE-specific hacks could have gone into the main CSS file (##yaru.css##) if they were in compliance with the CSS standards:
 
 %%hl xml
     /* Common definitions (begin) */
@@ -250,11 +254,13 @@ Non-valid workarounds were put in a standalone ##yaru-ie.css## (loaded with IE-o
 
 ===Building Up A Framework: The Beginning
 
-Designing similar projects eventually leads to re-creating the same blocks over and over again. Provided the fact that Yandex is in fact a portal having more than 100 services sharing the same corporate style, careless copy/paste from project to project doesn't work well for obvious reasons. So at first we had compiled a collection of reusable components, which inside Yandex was referred to as "common blocks library", or simply "the Common".
+Designing similar projects eventually leads to re-creating the same blocks over and over again. Yandex is a portal having more than 100 services sharing the same corporate style, so careless copy/paste doesn't work really well on this scale. So, to have something to begin with, we had a small compilation of reusable components, which inside Yandex was referred to as "common blocks library", or simply "the Common".
 
 First page fragments to be unified were: header, footer and some typographic CSS definitions. The corresponding files were hosted on an internal dedicated server (**common.cloudkill.yandex.ru** in the listings below).
 
-Styles could be imported from that server:
+This was the very beginning of our unified framework.
+
+Styles could be imported directly from that server:
 
 %%hl xml
 @import url(http://common.cloudkill.yandex.ru/css/global.css);
@@ -276,15 +282,15 @@ Styles could be imported from that server:
 
 Obviousy, too many imports! So, we decided to pre-compile styles (and later, JS files) before deployment; the compilation replaces ##@import## directives with the actual contents of external files (this is called ##inlining##) and performs more optimizations. Our internal inlining tool evolved from a simple wrapper script into an open source project ((https://github.com/veged/borschik borschik)); try it out!
 
-===Independent Blocks as a Concept
-By the fall of 2007, the principles we were using to build our pages took their shape to produce the Independent Block concept, which was featured at the ClientSide'2007 conference in Moscow, Russia.
+===Independent Blocks As a Concept
+By the fall of 2007, our everyday practice got some theory behind it. The Independent Block concept, which was by that time the basis of our HTML layouts, was featured at the ClientSide'2007 conference in Moscow, Russia.
 
 In that presentation, the first attempt to define a ##block## has been made.
 
 ==== Blocks: The Declaration of Independence
-In our attempt to produce a formal (in fact, semi-formal) declaration of a ##block##, the following 3 principles were highlighted:
+In our attempt to produce a formal (in fact, semi-formal) declaration of ##block##, the following 3 principles were highlighted:
 
- 1. Only classnames (not IDs) are used to describe styles;
+ 1. Only classnames (not IDs) should be used to describe styles;
  1. Each block's classname has a prefix;
  1. Any CSS rules except ones prefixed with g- must belong to a block.
 
