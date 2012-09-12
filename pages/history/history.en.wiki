@@ -315,7 +315,7 @@ Such classnames tend to be much longer, and the resulting HTML code is considera
 This was the main reason why AIB was considered a "costly solution" to be used more as a remedy, not as an everyday practice.
 
 =====Prefixes
-As everybody is aware nowadays, giving names to variables is one of the most difficult problems in development, ever. We approached it cautiously, and invented four prefixes allowed for block names, each with its own semantics.
+As everybody is aware nowadays, giving names to variables is one of the most difficult problems in development, ever. We approached it cautiously, and invented four prefixes allowed for block names, each one with its own semantics.
 
  * **b-**\\
    common blocks
@@ -328,27 +328,26 @@ As everybody is aware nowadays, giving names to variables is one of the most dif
 
 =====Modifications
 
-##Modification## can be defined as a specific state of a block, or a flag that holds some specific property.
-This is best explained with an example: a block representing a button may have three default sizes: small, normal and big. Instead of creating 3 different blocks, you should assign a ##modification## to your block. The modification requirs a name (e.g. "size") and a value ("small", "normal" or "big").
+##Modification## can be defined as a specific state of a block, or as a flag that holds some specific property.
+This is best explained with an example: a block representing a button may have three default sizes: small, normal and big. Instead of creating 3 different blocks, you should assign a ##modification## to your block. The modification requires a name (e.g. "size") and a value ("small", "normal" or "big").
 
-There are two legitimate sources of modification for a block:
+There are two reasons for a block to get a modification:
 
  1. Block may alter its presentation according to its placement in the layout.
     Such modification is called ##context-dependent##.
  1. An additional (postfixed) classname may change block's appearance. This is a context-independent (postfix-based) modification.\\
 ##class="b-block b-block-postfix"##
 
-Context-independent modifications are added 
-
 ===Unified Portal-Wide Framework
-At the beginning of 2008, Yandex had been going through a major review of its internal design policies and decided to prepare a brand book (for internal use) to enforce best practices in interface design.
+At the beginning of 2008, Yandex had been going through a major review of its internal design policies. We decided to create a brand book (for internal use) to enforce best practices in interface design, company-wide.
 
-This task was assigned to my team, and after some pondering of options, I decided to proceed with the one I was most proficient with: HTML and CSS code.\\
-Interfaces evolve fast, and any attempt to describe interfaces with words and pictures will become obsolete even before completion. We needed a brand book that would represent our interfaces as they were: changing rapidly and still unified between different Yandex services and products.
+This task was assigned to the front-end team, and after some pondering of options, we decided to proceed with technologies we were the most proficient with, namely: HTML and CSS code.\\
+
+Interfaces evolve fast, so fast that any long-term attempt to describe interfaces with words and pictures will become obsolete even before completion. We needed a brand book that would represent our interfaces as they were: changing rapidly and still unified between different Yandex services and products.
 
 Therefore, we decided that our interface brand book should be built with the same blocks we used to build our web sites. Blocks could be shared between projects and represent the latest in Yandex interface design.
 
-We decided to build a portal-wide framework of blocks so all could both benefit from it and contribute back. The project was internally named ##Lego##.
+We decided to build a portal-wide framework of blocks so all could benefit from it and contribute back. The project was internally named ##Lego##.
 
 ====Lego Repository Structure, First Approach
 The topmost level corresponded to various available ##implementations##:
@@ -397,7 +396,7 @@ html/
         b-hmenu.html
 %%
 
-JavaScript was yet loosely-structured and used inconsistently between services:
+JavaScript was yet loosely structured and used inconsistently between services:
 
 %%hl xml
 js/
@@ -409,7 +408,7 @@ js/
     event.del.js
 %%
 
-Each service had a corresponding XML file semantically describing its page header (and providing necessary project-specific data), which in conjunction with an XSL stylesheet generated the header HTML code.
+Each service had a corresponding XML file semantically describing its page header (and providing necessary project-specific data), which in conjunction with an XSL stylesheet generated header HTML code.
 
 %%hl xml
 xml/
@@ -422,7 +421,7 @@ xml/
             head.xml
 %%
 
-XSL templates for various blocks (one file per block) were placed in one folder:
+XSL templates for various blocks (one file per block) were contained in one folder:
 
 %%hl xml
 xsl/
@@ -441,7 +440,7 @@ Lego is linked to projects with the help of a version control feature known as #
 
 When a package is built for production deployment, the external library (Lego) code is embedded into the package; this is similar to static library linking in compiled languages.
 
-Lego provides an SVN branch for each of its major releases; sticking to a branch in svn:externals allow for hotfixes to arrive to a project; for extreme stability, project can freeze on a specific Lego revision. In either case, major versions switches can be prepared and made whenever necessary.
+Lego provides an SVN branch for each of its major releases; sticking to a branch in svn:externals allows for hotfixes to arrive to a project; for extreme stability, project can freeze at a specific Lego revision. In either case, major versions switches can be prepared and made whenever necessary.
 
 This simple technique proved quite flexible and is employed up to this day by many Yandex services.
 
@@ -455,7 +454,7 @@ Files linked from web pages were mostly importing corresponding block implementa
 @import url(block/b-head-logo-auto.css);
 %%
 
-The consistency of import directives was manually maintained.
+The consistency of import directives was maintained manually.
 
 At that point, we didn't yet come to a unified file naming convention and tried several approaches.
 
@@ -490,31 +489,31 @@ common/
                 b-dropdown.ie.css
 %%
 
-MSIE-specific styles had been renamed from *-ie.css to *.ie.css.
+MSIE-specific styles were renamed from *-ie.css to *.ie.css.
 
-All contents of optional CSS files (such as ##b-dropdown_arr.css##) had been moved into separate folders (##arr/b-dropdown.arr.css##).\\
+All contents of optional CSS files (such as ##b-dropdown_arr.css##) was moved into separate folders (##arr/b-dropdown.arr.css##).\\
 
 For classname-based modification of a block, the underscore was assigned as a separator, replacing a single dash that was used previously.\\
-This made a block name visually separated from a modificator name, and proved quite useful while developing automatic code tools, as it allowed for unambiguous search and pattern matching.
+This made a block name visually separated from a modificator name, and proved quite useful while developing automated tools, as it allowed for unambiguous search and pattern matching.
 
 ===BEM, est. 2009
 In March of 2009, Lego 2.0 had been released.\\
-That event marks the end of the "independent blocks" epoch and begins formation of the BEM methodology.
+That event marked the end of the "independent blocks" epoch and formation of the BEM methodology.
 
-BEM stands for Block, Element, Modifier; these are the three key entities we use to develop web components.
+BEM stands for Block, Element, Modifier; these are three key entities we use to develop web components.
 
 ====Lego 2.0 in 2009
 What was the key update the 2.0 version had delivered?
 
-What really changed our understanding of the methodology was the primacy of ##block## regardless of the underlying technologies. We think of blocks first and implementation details are secondary.
+What really changed our understanding of the methodology was the primacy of ##block## regardless of the underlying implementation technologies.
 
-Each block has itself implemented in a separate folder; each technology (CSS, JS, XSL etc.) being represented by a separate file. Documentation just gets its own file type such as ##.wiki##.
+Each block is contained in a separate folder; each technology (CSS, JS, XSL etc.) is represented by a separate file. Documentation just gets its own file type such as ##.wiki##.
 
 What additional terms did we operate on at that time?
 
 =====Terminology Excerpts
 ##Independent Block## may be used on any web page and placed anywhere in the layout.\\
-In XML that we use to apply XSL stylesheets to, the block is represented by an XML tag in ##lego## namespace.
+In XML we apply XSL stylesheets to, the block is represented by a node in ##lego## namespace.
 
 XML:
 
@@ -523,7 +522,7 @@ XML:
 <lego:b-head-logo>
 %%
 
-In HTML, a block container gets a classname exactly corresponding to its name.
+In HTML, block's container gets a classname exactly corresponding to its name.
 
 HTML:
 
@@ -539,7 +538,7 @@ CSS:
 .b-head-logo
 %%
 
-All block files (CSS, JS, HTML, XSL) are stored in the block's folder:
+All block files (CSS, JS, HTML, XSL) are stored in block's folder:
 
 %%hl xml
     common/
@@ -551,7 +550,7 @@ All block files (CSS, JS, HTML, XSL) are stored in the block's folder:
                 b-head-logo.wiki
 %%
 
-In XML files that describe page structure, blocks are described with elements in ##lego## namespace; block name prefix is omitted:
+In XML files that describe page structure, blocks are described with nodes in ##lego## namespace; block name prefix is omitted:
 
 %%hl xml
 <lego:b-head-logo>
@@ -581,7 +580,7 @@ common/
                 b-head-logo.name.wiki
 %%
 
-Modifiers in XML are specified as tag attributes in ##lego## namespace:
+Modifiers in XML are specified as node attributes in ##lego## namespace:
 
 %%hl xml
 <lego:b-head-tabs lego:theme="grey">
@@ -607,8 +606,8 @@ common/
                 b-head-logo_gray.wiki
 %%
 
-===== Declaring
-All lego components used in a project are described in an XML file:
+===== Declaration in XML
+All Lego components used in a project are described in an XML file:
 
 %%hl xml
 <lego:page>
@@ -651,8 +650,6 @@ This XML allows for CSS imports to be generated:
 
 This example shows that common styles are imported first; then, project styles add extra definitions or redefine some of the common blocks. This makes project-specific changes possible while maintaining a common shared codebase.
 
-Filenames use dot as a separator: ##b-head-logo.name.css##
-
 Same XML declarations allow for JS includes to be autogenerated.
 
 %%hl js
@@ -691,20 +688,20 @@ XSL templates imports are autogenerated as well, using the same XML-based defini
 </xsl:stylesheet>
 %%
 
-Code autogeneration was an important step forward; from this point onwards, we don't have to maintain depenpencies manually.
+Code generation was an important step forward; from this point onwards, we don't have to maintain depenpencies manually.
 
 ==== CSS Selector Speed Revisited, 2009
 
-During major redesign of Yandex.Mail service in 2009, interface responsiveness and overall speed were key factors. It was our goal to release a web application that feels as fast as a piece of desktop software, and maybe even faster.
+During major redesign of Yandex.Mail service in 2009, interface responsiveness and overall speed were the key factors. It was our goal to release a web application that feels as fast as a piece of desktop software, and maybe even faster.
 
-Client-side (in-browser) XSL transformations were employed as a main templating solution (XML with all the data was loaded separately). XSL transforms were applied really fast, but the resulting HTML code took significant time to be appended to the page DOM. However, disabling all CSS made this problem go away magically.
+Client-side (in-browser) XSL transformations were employed as a main templating solution (XML with all the data was loaded separately). XSL transforms are applied really fast, but the resulting HTML code takes significant time to be appended to the page DOM. However, disabling all CSS made this problem go away magically.
 
-While studying various factors that could have affected rendering speed, CSS selectors were identified as a major source of the slowdown. The bigger the DOM tree and the CSS stylesheet, the longer it takes for all CSS rules to be applied.
+While studying various factors that could have affected the rendering speed, CSS selectors were identified as a major source of the slowdown. The bigger the DOM tree and the CSS stylesheet, the longer it takes for all CSS rules to be applied.
 
 These's a summary of our study available (in Russian):
 ((http://clubs.ya.ru/bem/replies.xml?item_no=338)).
 
-And it turned out that there's a way to make that CSS many times faster: we should switch to simple selectors and eliminate CSS cascade wherever possible. Selectors based on a single classname are quick and browser handles them with ease. We already had a solution that could use such selectors: the so-called 
+And it turned out that there is a way to make that CSS many times faster: we should switch to simple selectors and eliminate CSS cascade wherever possible. Selectors based on a single classname are quick and browser handles them with ease. We already had a solution that could use such selectors: the so-called 
 ((http://clubs.ya.ru/bem/replies.xml?item_no=338 completely independent blocks)).
 
 All Lego blocks were refactored to follow the completely independent blocks restrictions. As soon as block name becomes a prefix of block element's classnames, most selectors require a single class query and work way more faster.
