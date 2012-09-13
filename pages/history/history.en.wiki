@@ -701,10 +701,10 @@ While studying various factors that could have affected the rendering speed, CSS
 These's a summary of our study available (in Russian):
 ((http://clubs.ya.ru/bem/replies.xml?item_no=338)).
 
-And it turned out that there is a way to make that CSS many times faster: we should switch to simple selectors and eliminate CSS cascade wherever possible. Selectors based on a single classname are quick and browser handles them with ease. We already had a solution that could use such selectors: the so-called 
+It turned out there is a way to make CSS many times faster: switching to simple selectors and eliminating CSS cascade wherever possible. Selectors based on a single classname are quick and browser handles them with ease. We already had a solution that could use such selectors: the so-called 
 ((http://clubs.ya.ru/bem/replies.xml?item_no=338 completely independent blocks)).
 
-All Lego blocks were refactored to follow the completely independent blocks restrictions. As soon as block name becomes a prefix of block element's classnames, most selectors require a single class query and work way more faster.
+All Lego blocks were refactored to follow the completely independent blocks restrictions. As soon as all classnames become unique, most rules require a single class query and work way faster.
 
 %%hl xml
 <div class="b-head-logo">
@@ -715,37 +715,36 @@ All Lego blocks were refactored to follow the completely independent blocks rest
 %%
 
 ====Establishing Naming Conventions
-After several attempts of modifying the naming conventions, we agreed on some naming principles that hadn't changed since then.
+After taking several attempts to modify naming conventions, we agreed on some naming principles that hadn't changed since then.
 
 In file names, the dot separator was replaced by double underscore __. Before: ##b-block.elem.css##,
-after: ##b-block__elem.css##. File names were made consistent with CSS selectors.
+after: ##b-block__elem.css##; thus, file names were made consistent with CSS selectors.
 
 Block's elements were allowed to have their own modifiers, too.
 
-##.b-block__elem_theme_green## по аналогии с ##.b-block_theme_green##.
+##.b-block__elem_theme_green##, similar to ##.b-block_theme_green##.
 
 Modifiers were changed to be a key/value pair:
 Before: ##.b-menu__item_current##
 After: ##.b-menu__item_state_current##.\\
-This change turned out useful when working with modifiers from JavaScript.
+This change turned out to be useful when working with modifiers from JavaScript.
 
 ===Going Open Source (2010)
 
 In 2010, we had published some code on ((https://github.com/bem our GitHub account)) to continue growing as an open source project.
 
 ====Creating bem-bl Library
-Blocks from Lego are being gradually ported to ((https://github.com/bem/bem-bl bem-bl)), a library of blocks we consider useful for any web site, not just a Yandex project. As blocks are open-sourced, We try to improve code and add new features.
+Blocks from Lego are being gradually ported to ((https://github.com/bem/bem-bl bem-bl)), a library of blocks we consider useful for any web site, not just a Yandex project. As blocks are gradually open-sourced, we improve code and add new features.
 
 This is very much a work in progress, and we invite everybody to make pull requests :-)
 
-We also develop ((https://github.com/bem/bem-tools bem-tools)), a set of helper scripts and automation utilities that make working with BEM files easier. This is mostly done with Node.js, to keep the barriers low for frontend people familiar with JavaScript who'd like to contribute.
-
+We also develop ((https://github.com/bem/bem-tools bem-tools)), a set of helper scripts and automation utilities that make working with BEM files easier. This is mostly done with Node.js, to keep the barriers low for front-end people familiar with JavaScript and willing to contribute.
 
 ====Redefinition Levels In BEM
 
-One size never fits all... but one BEM does! Because blocks and elements are represented on a file system as files and folders, and because BEM file structure is unified and based mostly on semantical criteria, we can easily redefine parts of BEM blocks, or add more functionality. Similar to a way we extend objects in JavaScript, we can extend blocks using so-called "redefinition levels".
+One size never fits all... but one BEM does! Because blocks and elements are represented on a file system as files and folders, and BEM file structure is unified and based mostly on semantical criteria, we can easily redefine a part of a BEM block, or add more functionality. Similar to the way we extend objects in JavaScript, BEM blocks can be extended using so-called "redefinition levels".
 
-Typical redefinitions levels may look like this:
+Typical redefinition levels may be defined like this:
 
  1. public bem-bl library pulled from github, extended by...
  1. internal block library (such as Lego), extended by..
@@ -765,14 +764,14 @@ auto/
         b-logo/
 %%
 
-It is also possible to have a custom file structure on a redefinition level; as long as you follow the BEM concept, all you need is to tell our build tools about your new cool structure. We won't go into much detail here, but there's a configuration file for that:
+It is also possible to use a custom file structure on a redefinition level; as long as you follow the BEM concept, all you need is to configure our build tools according to your new cool structure. We won't go into much detail here, but there's a configuration file for that:
 
 %%hl xml
 .bem/
     level.js
 %%
 
-You can specify different file naming patterns, or flatten your folder structure.
+You can specify different file naming patterns, or even flatten your folder structure completely.
 
 ==== BEMHTML Templating Engine
 We tried different templating solutions, and ended up developing our own, called BEMHTML.
@@ -780,8 +779,8 @@ We tried different templating solutions, and ended up developing our own, called
 This templating engine:
 
  1. operates on core BEM (Block, Element, Modifier) terms
- 1. allows for redefinition levels: build common blocks and tailor them to your needs
- 1. precompiles these templates into JavaScript code that runs in a browser or on the server side
+ 1. supports redefinition levels: build common blocks and tailor them to your needs
+ 1. precompiles templates into JavaScript code that runs either in a browser, or on a server
 
 More details on BEMHTML is available in Russian here:
 
@@ -795,11 +794,11 @@ More details on BEMHTML is available in Russian here:
 
 As you can see, BEM has a long history of trial and error. It took Yandex a while to figure out what's important and what not.
 
-The foundation of the BEM methodology are Block, Element and Modifier; these entities have been consistenly used in all our projects.
+The foundation of the BEM methodology are Block, Element and Modifier; these entities are consistently used in all our projects.
 
-BEM as we know and use it today is not the final truth, nor the revelation; but it something constantly being driven by practice, and tested on real-life projects. You can use this methodology to the extent that you feel is useful.
+BEM as we know and use it today is not the final truth, nor the revelation, but something constantly being driven by practice, and tested on real-life projects. You can follow this methodology to the extent that you find useful.
 
-BEM is quite flexible, as it is mostly a methodology; there is no such thing as BEM API, or BEM SDK. While we encourage you to try and use the open source tools we provide, which are indeed a BEM framework, you might find BEM principles good enough to be embedded into your products or technologies.
+BEM is quite flexible, as it is mostly a methodology; there is no such thing as BEM API, or BEM SDK. While we encourage you to try and use the open source tools we provide, which are indeed a BEM framework, you might find BEM principles good enough to be embedded into your products or technologies in some other way.
 
 Let's discuss an example briefly.
 
@@ -835,7 +834,7 @@ Find CSS prefixes too long to type? Remove them!
 .block__elem_size_l
 %%
 
-This is a perfect opportunity to try BEM concepts, and since we don't really have those strict rules, you're not really breaking any rules while you hold on to the main principle of blocks, elements and modifiers.
+This is a perfect opportunity to try BEM concepts, and since we don't really have those strict rules, you're not really breaking anything as long as you hold on to the main principle of blocks, elements and modifiers.
 
 Have a single file per each techonology you use and put all block declarations together:
 
@@ -846,10 +845,10 @@ myfacebook/
     myfacebook.html
 %%
 
-You have to support all the changes manually at this stages (no bem-tools), but this may shorten the learning curve as well!
+You have to support all the changes manually at this stage (without bem-tools), but this may shorten the learning curve as well!
 
 ====Blocks in a separate folder
-As your project rows, you'll find it more convenient to have each block in a separate file. Just create an extra folder an put all block declarations there:
+As your project grows, you'll find it more convenient to have each block in a separate file. Just create an extra folder an put all block declarations there:
 
 %%hl xml
 blocks/
@@ -859,10 +858,10 @@ blocks/
     b-yourblock.js
 %%
 
-At this point, you'll need to build your JS and CSS files to combine multiple block declarations into a single file (e.g. gather all individual block styles into a project CSS ile along with all other CSS you have). Try bem-tools and see if you find them useful!
+At this point, you'll need to build your JS and CSS files to combine multiple block declarations into a single one (i.e. gather all individual block styles into a project CSS file). Try bem-tools and see if you find them useful!
 
 ====Making Things Optional
-Some blocks may have elements or modifiers that are never used on some pages or appear in a specific scenarios only. You can load optional elements separately to keep the core file small and neat:
+Some blocks may have elements or modifiers that you use on certain pages only, or in a specific scenario. You can load optional elements separately to keep the core file small and neat:
 
 %%hl xml
 blocks/
